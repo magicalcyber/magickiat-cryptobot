@@ -1,0 +1,9 @@
+/**/.settings/
+/**/target/
+/**/.idea/
+
+/**/.project
+/**/.classpath
+/**/*.iml
+/trade-history.csv
+/*.log
