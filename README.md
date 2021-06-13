@@ -1,6 +1,7 @@
 # MagicKiat CryptoBot
 
 [Crypto Trading Bot EP.1](https://magickiat.cc/2021/06/10/crypto-trading-bot-ep-1/)
+
 [Crypto Trading Bot EP.2](https://magickiat.cc/2021/06/10/crypto-trading-bot-ep-2/)
 
 
