@@ -5,12 +5,9 @@ import cc.magickiat.crypto.bot.dto.CandlestickDto;
 import cc.magickiat.crypto.bot.strategy.SellStrategy;
 import org.apache.commons.lang3.StringUtils;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public class FixedAssetSellStrategy implements SellStrategy {
 
-    private Double amount;
+    private String amount;
 
     @Override
     public void initConfig(BotConfig config) {
@@ -20,7 +17,8 @@ public class FixedAssetSellStrategy implements SellStrategy {
         }
 
         try {
-            amount = Double.parseDouble(strAmount);
+            Double.parseDouble(strAmount);
+            amount = strAmount;
         } catch (Exception ex) {
             throw new IllegalArgumentException("Invalid amount: " + strAmount);
         }
@@ -28,9 +26,6 @@ public class FixedAssetSellStrategy implements SellStrategy {
 
     @Override
     public String getQuantity(CandlestickDto candlestickDto) {
-        BigDecimal quantity = candlestickDto
-                .getClose().divide(new BigDecimal(amount), RoundingMode.HALF_UP);
-
-        return quantity.toPlainString();
+        return amount;
     }
 }

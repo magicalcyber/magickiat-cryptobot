@@ -48,7 +48,6 @@ public class Trader {
         // Prepare Binance client
         BinanceApiClientFactory factory = BinanceApiClientFactory.newInstance(System.getenv("BINANCE_API_KEY"), System.getenv("BINANCE_API_SECRET"));
         BinanceApiRestClient restClient = factory.newRestClient();
-        BinanceApiWebSocketClient webSocketKLine = factory.newWebSocketClient();
 
         // Init trade strategy
         TradeStrategy tradeStrategy = TradeStrategyFactory.createStrategy(config.getStrategyName(), config.getStrategyConfig());
@@ -76,6 +75,8 @@ public class Trader {
         logger.info(">>>>> Begin retrieve candlestick <<<<<");
         TradeLogger tradeLogger = new TradeLogger();
 
+        final String symbolUpperCase = symbol.toUpperCase();
+        BinanceApiWebSocketClient webSocketKLine = factory.newWebSocketClient();
         final Closeable closeable = webSocketKLine.onCandlestickEvent(symbol.toLowerCase(), candlestickInterval, e -> {
             if (e.getBarFinal()) {
                 CandlestickDto candlestickDto = CandlestickConverter.mapCandlestickEvent(e);
@@ -84,15 +85,22 @@ public class Trader {
                 TradeAction tradeAction = tradeStrategy.onCandlestickClosed(candlestickDto);
                 switch (tradeAction) {
                     case BUY: {
+                        tradeLogger.writeLog(tradeAction, symbolUpperCase, candlestickDto);
+
+                        String buyQuantity = buyStrategy.getQuantity(candlestickDto);
                         logger.info("BUY signal@{}", candlestickDto.getCloseTime());
-                        restClient.newOrderTest(marketBuy(symbol.toUpperCase(), buyStrategy.getQuantity(candlestickDto)));
+                        logger.info("BUY quantity: {}", buyQuantity);
+                        restClient.newOrderTest(marketBuy(symbolUpperCase, buyQuantity));
                         logger.info("Place buy order complete");
-                        tradeLogger.writeLog(tradeAction, symbol, candlestickDto);
                         break;
                     }
                     case SELL: {
+                        tradeLogger.writeLog(tradeAction, symbolUpperCase, candlestickDto);
+
+                        String sellQuantity = sellStrategy.getQuantity(candlestickDto);
                         logger.info("SELL signal@{}", candlestickDto.getCloseTime());
-                        restClient.newOrderTest(marketSell(symbol.toUpperCase(), sellStrategy.getQuantity(candlestickDto)));
+                        logger.info("SELL quantity: {}", sellQuantity);
+                        restClient.newOrderTest(marketSell(symbolUpperCase, sellQuantity));
                         logger.info("Place sell order complete");
                         break;
                     }
@@ -114,6 +122,7 @@ public class Trader {
                 logger.error(e.getMessage());
             }
         }));
+
     }
 
 }
