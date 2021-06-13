@@ -34,8 +34,6 @@ public class EmaFamilyTradeStrategy implements TradeStrategy {
 
     private CandlestickDto inPositionBuy;
 
-    private final Properties config = new Properties();
-
     @Override
     public TradeAction onCandlestickClosed(CandlestickDto candlestickDto) {
         candlesticks.add(candlestickDto);
@@ -67,8 +65,6 @@ public class EmaFamilyTradeStrategy implements TradeStrategy {
         Properties prop = new Properties();
         try (InputStream is = new FileInputStream(configPath)) {
             prop.load(is);
-
-            config.putAll(prop);
 
             emaPeriodFirst = Integer.parseInt(prop.getProperty("ema.period.first"));
             emaPeriodSecond = Integer.parseInt(prop.getProperty("ema.period.second"));
