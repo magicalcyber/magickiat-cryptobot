@@ -1,4 +1,9 @@
 # MagicKiat CryptoBot
+
+[Crypto Trading Bot EP.1](https://magickiat.cc/2021/06/10/crypto-trading-bot-ep-1/)
+[Crypto Trading Bot EP.2](https://magickiat.cc/2021/06/10/crypto-trading-bot-ep-2/)
+
+
 This software is for educational purposes only. USE THE SOFTWARE AT YOUR OWN RISK. THE AUTHORS AND ALL AFFILIATES ASSUME NO RESPONSIBILITY FOR YOUR TRADING RESULTS. Do not risk money which you are afraid to lose. There might be bugs in the code - this software DOES NOT come with ANY warranty.
 
 
