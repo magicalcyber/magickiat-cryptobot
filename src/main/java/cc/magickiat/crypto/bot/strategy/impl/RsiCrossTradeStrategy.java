@@ -30,12 +30,17 @@ public class RsiCrossTradeStrategy implements TradeStrategy {
         double[] smaSlow = getSma(closedPrice, smaSlowPeriod);
 
         // check cross over
-        if (smaFast[smaFast.length - 1] > smaSlow[smaSlow.length - 1]) {
+        double currentSmaFast = smaFast[smaFast.length - 1];
+        double currentSmaSlow = smaSlow[smaSlow.length - 1];
+        double prevSmaFast = smaFast[smaFast.length - 2];
+        double prevSmaSlow = smaSlow[smaSlow.length - 2];
+
+        if (currentSmaFast > currentSmaSlow && prevSmaFast < prevSmaSlow) {
             return TradeAction.BUY;
         }
 
         // check cross under
-        if (smaFast[smaFast.length - 1] < smaSlow[smaSlow.length - 1]) {
+        if (currentSmaFast < currentSmaSlow && prevSmaFast > prevSmaSlow) {
             return TradeAction.SELL;
         }
 
